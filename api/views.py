@@ -18,6 +18,8 @@ from rest_framework.permissions import (
     AllowAny, IsAdminUser, IsAuthenticated,
     IsAuthenticatedOrReadOnly
     )
+#from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
+from .pagination import PostLimitOffsetPagination, PostPageNumberPagination
 
 
 class PostList(ListAPIView):
@@ -25,6 +27,9 @@ class PostList(ListAPIView):
     serializer_class = PostListSerializer
     filter_backends = [SearchFilter, OrderingFilter]#search for filter backends and ordering for order in url -->&ordering=-title<--
     search_fields = ['title', 'content', 'user__first_name'] # for url while we uses -->/?search=....<-- 
+    #pagination_class = LimitOffsetPagination#for usese in url -->/?limit=...<--
+    pagination_class = PostLimitOffsetPagination #or PostPageNumberPagination
+
 
     def get_queryset(self, *args, **kwargs):
         #queryset_list = super(PostList, self).get_queryset(*args, **kwargs)  -->1
@@ -47,11 +52,13 @@ class PostDetail(RetrieveAPIView):
     lookup_field = 'slug' #for change default use pk
     #lookup_url_kwarg = 'abc' >>> for change input url --> path('<abc>/', ... ),
 
+
 class PostDestroy(DestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostDetailSerializer
     lookup_field = 'slug' #for change default use pk
     lookup_url_kwarg = 'abc'
+
 
 class PostUpdate(UpdateAPIView):
     queryset = Post.objects.all()
@@ -60,6 +67,7 @@ class PostUpdate(UpdateAPIView):
 
     def perform_update(self, serializer):
         serializer.save(user=self.request.user)
+
 
 class PostCreate(CreateAPIView):
     queryset = Post.objects.all()
