@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     PostList, PostDetail, PostDestroy,
-    PostUpdate, PostCreate, 
+    PostUpdate, PostCreate, UserDetail
 )
 
 app_name = 'api'
@@ -12,4 +12,5 @@ urlpatterns = [
     path('post-update/<int:pk>/', PostUpdate.as_view(),name='post-update'),
     path('post-destroy/<abc>/', PostDestroy.as_view(), name='post-destroy'),
     path('post-create/', PostCreate.as_view(), name='post-create'),
+    path('user-detail/<username>/', UserDetail.as_view(),name='user-detail')
 ]

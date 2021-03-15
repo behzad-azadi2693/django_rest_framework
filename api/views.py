@@ -11,7 +11,7 @@ from rest_framework.generics import (
 
 from .serializers import (
     PostListSerializer, PostDetailSerializer, PostCreateSerializer,
-    
+    UserDetail
     )
 
 from rest_framework.permissions import (
@@ -77,3 +77,9 @@ class PostCreate(CreateAPIView):
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+from django.contrib.auth.models import User
+class UserDetail(RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserDetail
+    lookup_field = 'username'
