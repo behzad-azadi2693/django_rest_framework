@@ -1,19 +1,44 @@
 from django.shortcuts import render
-
 # Create your views here.
+from django.db.models import Q
 from posts.models import Post
+from .permissions import IsOwnerOrReadOnly
+from rest_framework.filters import SearchFilter, OrderingFilter 
 from rest_framework.generics import (
     ListAPIView, RetrieveAPIView, DestroyAPIView,
-    UpdateAPIView,CreateAPIView
-)
+    UpdateAPIView,CreateAPIView, RetrieveUpdateDestroyAPIView
+    )
+
 from .serializers import (
     PostListSerializer, PostDetailSerializer, PostCreateSerializer,
     
-)
+    )
 
-class PostAPIView(ListAPIView):
-    queryset = Post.objects.all()
+from rest_framework.permissions import (
+    AllowAny, IsAdminUser, IsAuthenticated,
+    IsAuthenticatedOrReadOnly
+    )
+
+
+class PostList(ListAPIView):
+    #queryset = Post.objects.all() -->1
     serializer_class = PostListSerializer
+    filter_backends = [SearchFilter, OrderingFilter]#search for filter backends and ordering for order in url -->&ordering=-title<--
+    search_fields = ['title', 'content', 'user__first_name'] # for url while we uses -->/?search=....<-- 
+
+    def get_queryset(self, *args, **kwargs):
+        #queryset_list = super(PostList, self).get_queryset(*args, **kwargs)  -->1
+        #queryse_list = Post.objects.filter(user=self.request.user) --> alone uses
+        queryset_list = Post.objects.all()
+        query = self.request.GET.get('q') # for url while we uses -->/?p=<--
+        if query:
+            queryset_list = queryset_list.filter(
+                Q(title__icontains=query)|
+                Q(content__icontains=query)|
+                Q(user__first_name=query)|
+                Q(user__last_name=query)
+            ).distinct()
+        return queryset_list 
 
 
 class PostDetail(RetrieveAPIView):
@@ -31,6 +56,7 @@ class PostDestroy(DestroyAPIView):
 class PostUpdate(UpdateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostDetailSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
     def perform_update(self, serializer):
         serializer.save(user=self.request.user)
@@ -38,6 +64,7 @@ class PostUpdate(UpdateAPIView):
 class PostCreate(CreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostCreateSerializer
-
+    permission_classes = [IsAuthenticated, IsAdminUser]
+    
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
