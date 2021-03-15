@@ -58,6 +58,7 @@ class PostDestroy(DestroyAPIView):
     serializer_class = PostDetailSerializer
     lookup_field = 'slug' #for change default use pk
     lookup_url_kwarg = 'abc'
+    permission_classes=[IsOwnerOrReadOnly,]
 
 
 class PostUpdate(UpdateAPIView):

@@ -3,6 +3,7 @@ from .views import (
     PostList, PostDetail, PostDestroy,
     PostUpdate, PostCreate, 
 )
+
 app_name = 'api'
 
 urlpatterns = [
