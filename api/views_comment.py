@@ -7,7 +7,7 @@ from rest_framework.permissions import (
             AllowAny
         )
 from .serializer_comment import (
-            CommentSerializers,
+            CommentSerializers, CommentChildSerializers, CommentDetailSerializers,
         )        
 from rest_framework.filters import SearchFilter, OrderingFilter
 from .pagination import PostLimitOffsetPagination, PostPageNumberPagination
@@ -18,7 +18,7 @@ from django.db.models import Q
 
 class CommentDetail(RetrieveAPIView):
     queryset = Comment.objects.all()
-    serializer_class = CommentSerializers
+    serializer_class = CommentDetailSerializers
 
 
 class CommentList(ListAPIView):
