@@ -1,6 +1,7 @@
 from posts.models import Post
 from django.contrib.auth.models import User
-
+from .serializer_comment import CommentSerializers
+from comments.models import Comment
 from rest_framework.serializers import (
     ModelSerializer, HyperlinkedIdentityField, SerializerMethodField
     )
@@ -33,6 +34,7 @@ class PostListSerializer(ModelSerializer):
 
 
 class PostDetailSerializer(ModelSerializer):
+    comments = SerializerMethodField()
     destroy_url = post_destroy_url
     user = SerializerMethodField()
     image = SerializerMethodField()
@@ -44,7 +46,7 @@ class PostDetailSerializer(ModelSerializer):
     )
     class Meta:
         model = Post
-        fields = ['destroy_url','user_url', 'id', 'title', 'slug','image' ,'content', 'publish', 'user', 'html']
+        fields = ['destroy_url','user_url', 'id', 'title', 'slug','image' ,'content', 'publish', 'user', 'html', 'comments']
 
     def get_html(self, obj):
         return obj.get_markdown()
@@ -58,6 +60,11 @@ class PostDetailSerializer(ModelSerializer):
 
     def get_user(self, obj):
         return str(obj.user.username)
+
+    def get_comments(self, obj):
+        c_qs = Comment.objects.filter_by_instance(obj)
+        comments = CommentSerializers(c_qs, many=True).data
+        return comments
 
 class PostCreateSerializer(ModelSerializer):
     class Meta:
