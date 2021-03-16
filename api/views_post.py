@@ -9,7 +9,7 @@ from rest_framework.generics import (
     UpdateAPIView,CreateAPIView, RetrieveUpdateDestroyAPIView
     )
 
-from .serializers import (
+from .serializers_post import (
     PostListSerializer, PostDetailSerializer, PostCreateSerializer,
     UserDetail
     )
