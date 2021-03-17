@@ -4,7 +4,7 @@ from .views_post import (
         PostUpdate, PostCreate
     )
 from .views_user import (
-        UserDetail,UserCreate
+        UserDetail,UserCreate,UserLogin
     )
 from .views_comment import (
         CommentList, CommentEditDetail
@@ -15,6 +15,7 @@ app_name = 'api'
 third_urlpatterns = [
     path('user-create/', UserCreate.as_view(), name='user-create'),
     path('user-detail/<username>/', UserDetail.as_view(),name='user-detail'),
+    path('user-login/', UserLogin.as_view(), name='user-login'),
 ]
 
 extra_urlpatterns = [

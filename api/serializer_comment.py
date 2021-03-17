@@ -1,5 +1,6 @@
 from comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
+from .serializer_user import UserDetailSerializer
 from rest_framework.serializers import (
                     HyperlinkedIdentityField, SerializerMethodField, ModelSerializer,
                     ValidationError,
@@ -65,11 +66,12 @@ class CommentChildSerializers(ModelSerializer):
 
 
 class CommentDetailSerializers(ModelSerializer):
+    user = UserDetailSerializer(read_only=True)
     replies = SerializerMethodField()
     content_object_url = SerializerMethodField()
     class Meta:
         model = Comment
-        fields = ['id', 'content', 'replies', 'content_object_url']
+        fields = ['id', 'content', 'replies', 'content_object_url', 'user']
         read_only_fields =['replies']
 
     def get_content_object_url(self, obj):

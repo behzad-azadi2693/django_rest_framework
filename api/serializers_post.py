@@ -2,6 +2,7 @@ from posts.models import Post
 from django.contrib.auth.models import User
 from .serializer_comment import CommentSerializers
 from comments.models import Comment
+from .serializer_user import UserDetailSerializer
 from rest_framework.serializers import (
     ModelSerializer, HyperlinkedIdentityField, SerializerMethodField
     )
@@ -36,7 +37,7 @@ class PostListSerializer(ModelSerializer):
 class PostDetailSerializer(ModelSerializer):
     comments = SerializerMethodField()
     destroy_url = post_destroy_url
-    user = SerializerMethodField()
+    user = UserDetailSerializer()
     image = SerializerMethodField() #this is method just showing not to change
     html = SerializerMethodField()
     user_url = HyperlinkedIdentityField(
@@ -57,9 +58,6 @@ class PostDetailSerializer(ModelSerializer):
         except:
             image = None
         return image
-
-    def get_user(self, obj):
-        return str(obj.user.username)
 
     def get_comments(self, obj):
         c_qs = Comment.objects.filter_by_instance(obj)
