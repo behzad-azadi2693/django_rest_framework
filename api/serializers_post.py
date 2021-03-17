@@ -70,9 +70,3 @@ class PostCreateSerializer(ModelSerializer):
     class Meta:
         model = Post
         fields = ['title', 'content', 'publish']
-
-
-class UserDetail(ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['username', 'first_name', 'last_name']

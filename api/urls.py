@@ -1,7 +1,10 @@
 from django.urls import path, include
 from .views_post import (
         PostList, PostDetail, PostDestroy,
-        PostUpdate, PostCreate, UserDetail
+        PostUpdate, PostCreate
+    )
+from .views_user import (
+        UserDetail,UserCreate
     )
 from .views_comment import (
         CommentList, CommentEditDetail
@@ -9,6 +12,10 @@ from .views_comment import (
 
 app_name = 'api'
 
+third_urlpatterns = [
+    path('user-create/', UserCreate.as_view(), name='user-create'),
+    path('user-detail/<username>/', UserDetail.as_view(),name='user-detail'),
+]
 
 extra_urlpatterns = [
     path('comment-list/',CommentList.as_view(),name='comment-list'),
@@ -21,6 +28,6 @@ urlpatterns = [
     path('post-update/<int:pk>/', PostUpdate.as_view(),name='post-update'),
     path('post-destroy/<abc>/', PostDestroy.as_view(), name='post-destroy'),
     path('post-create/', PostCreate.as_view(), name='post-create'),
-    path('user-detail/<username>/', UserDetail.as_view(),name='user-detail'),
     path('',include(extra_urlpatterns)),
+    path('',include(third_urlpatterns)),
 ]
