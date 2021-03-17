@@ -46,6 +46,10 @@ class Comment(models.Model):
     def get_absolute_url(self):
         return reverse("comments:thread", kwargs={"id": self.id})
 
+    def get_api_url(self):
+        return reverse("api:comment-detail", kwargs={"id": self.id})
+
+
     def get_delete_url(self):
         return reverse("comments:delete", kwargs={"id": self.id})
         

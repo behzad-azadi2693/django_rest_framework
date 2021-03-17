@@ -4,7 +4,7 @@ from .views_post import (
         PostUpdate, PostCreate, UserDetail
     )
 from .views_comment import (
-        CommentList, CommentDetail
+        CommentList, CommentEditDetail
     )
 
 app_name = 'api'
@@ -12,7 +12,7 @@ app_name = 'api'
 
 extra_urlpatterns = [
     path('comment-list/',CommentList.as_view(),name='comment-list'),
-    path('comment-detail/<int:pk>/', CommentDetail.as_view(), name='comment-detail'),
+    path('comment-detail/<int:id>/', CommentEditDetail.as_view(), name='comment-detail'),
 ]
 
 urlpatterns = [

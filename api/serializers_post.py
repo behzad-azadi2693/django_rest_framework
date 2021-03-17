@@ -37,7 +37,7 @@ class PostDetailSerializer(ModelSerializer):
     comments = SerializerMethodField()
     destroy_url = post_destroy_url
     user = SerializerMethodField()
-    image = SerializerMethodField()
+    image = SerializerMethodField() #this is method just showing not to change
     html = SerializerMethodField()
     user_url = HyperlinkedIdentityField(
         view_name = 'api:user-detail',
