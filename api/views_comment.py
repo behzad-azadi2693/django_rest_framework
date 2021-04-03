@@ -24,6 +24,7 @@ class CommentList(ListAPIView):
     search_fields = ['content', 'user__first_name']
     pagination_class = PostPageNumberPagination        
 
+    
     def get_queryset(self, *args, **kwargs):
         queryset_list = Comment.objects.filter(id__gte=0)
         query = self.request.GET.get('q')
@@ -39,7 +40,7 @@ class CommentEditDetail(UpdateModelMixin,DestroyModelMixin, RetrieveAPIView):
     queryset = Comment.objects.filter(id__gte=0)
     serializer_class = CommentDetailSerializers
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnlyComment]
-    lookup_field ='id'
+    lookup_field ='pk'
 
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)

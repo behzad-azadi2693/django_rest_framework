@@ -41,8 +41,11 @@ INSTALLED_APPS = [
     'posts',
     'comments',
     'api',
+    'api_v2',
     #3rd package
     'rest_framework',
+    'rest_framework.authtoken',
+    'markdown_deux',
 ]
 
 MIDDLEWARE = [
@@ -124,3 +127,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+RES_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES':
+    [
+        'restframework.authentication.TokenAthentication',
+    ]
+}
