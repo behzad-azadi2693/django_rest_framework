@@ -64,4 +64,4 @@ class UserCreate(APIView):
             ud = User.objects.create_user(username=username, email=email, password=password)
             ud.save()
             return Response(srz.data, status=status.HTTP_201_CREATED)
-        return Response(srz.error, status=status.HTTP_400_BAD_REQUEST)      
+        return Response(srz.errors, status=status.HTTP_400_BAD_REQUEST)      

@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, ValidationError
 from rest_framework import serializers
 
 
@@ -10,22 +10,31 @@ class UserSerializer(ModelSerializer):
 
 
 class UserCreateSerializer(ModelSerializer):
+    email2 = serializers.EmailField()
     class Meta:
         model = User
-        fields = ['username', 'password', 'email']
+        fields = ['username', 'password', 'email', 'email2']
         extra_kwargs = {
             'password':{
                 'write_only':True,
             }
         }
     
-    def validate(self, data):
+    def validate_email(self, data):
+        data = self.get_initial() 
         email = data.get('email')
-        user = User.objects.filter(email = email)
-        if user:
+        email = User.objects.filter(email = email)
+        if email:
             raise ValidationError("this user has already register")
         return data
 
+    def validate_email2(self, value):
+        data = self.get_initial()
+        email1 = data.get('email')
+        email2 = value
+        if email1 != email2:
+            raise ValidationError('email must match')
+        return value
 
 class UserLoginSerializer(ModelSerializer):
     token = serializers.CharField(allow_blank=True, read_only=True)

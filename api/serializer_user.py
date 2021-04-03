@@ -29,8 +29,8 @@ class UserCreateSerializer(ModelSerializer):
     def validate_email2(self, value):
         data = self.get_initial()
         email1 = data.get('email')
-        email12 = value
-        if email1 != email12:
+        email2 = value
+        if email1 != email2:
             raise ValidationError('email must match')
         return value
 
