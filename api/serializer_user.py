@@ -20,7 +20,7 @@ class UserCreateSerializer(ModelSerializer):
         }
     
     def validate(self, data):
-        email = data['email']
+        email = data.get('email')
         user = User.objects.filter(email = email)
         if user:
             raise ValidationError("this user has already register")
@@ -28,11 +28,12 @@ class UserCreateSerializer(ModelSerializer):
          
     def validate_email2(self, value):
         data = self.get_initial()
-        email1 = data.get['email']
+        email1 = data.get('email')
         email12 = value
         if email1 != email12:
             raise ValidationError('email must match')
         return value
+
     def create(self, validated_data):
         username = validated_data['username']
         email = validated_data['email']
