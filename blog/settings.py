@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'comments',
     'api',
     'api_v2',
+    'api_v3',
     #3rd package
     'rest_framework',
     'rest_framework.authtoken',
@@ -129,9 +130,21 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-RES_FRAMEWORK = {
+REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES':
     [
-        'restframework.authentication.TokenAthentication',
-    ]
+        'rest_framework.authentication.TokenAuthentication',
+        #'rest_framework.authentication.BasicAuthentication', #for test
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.ScopedRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'contacts': '1000/day',
+        'uploads': '20/day'
+    }
 }

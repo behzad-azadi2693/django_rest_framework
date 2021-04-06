@@ -22,5 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('api-v2/', include('api_v2.urls')),
-    path('token-auth/', obtain_auth_token),
+    path('api-v3/', include('api_v3.urls')),
+    path('token-auth/', obtain_auth_token),# this for se token
+    path('api_auth/', include('rest_framework.urls')), # this use for session
 ]

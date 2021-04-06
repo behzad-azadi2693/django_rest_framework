@@ -4,7 +4,13 @@ from .serializer_comment import CommentSerializers
 from comments.models import Comment
 from .serializer_user import UserDetailSerializer
 from rest_framework.serializers import (
-    ModelSerializer, HyperlinkedIdentityField, SerializerMethodField
+    ModelSerializer, 
+    HyperlinkedIdentityField,#connect link for show
+    SerializerMethodField,
+    SlugRelatedField,#get name one fields for show (slig_fields='name_field_of_tabel', read_only=True)
+    StringRelatedField,#this use for show __str__ for output
+    PrimaryKeyRelatedField, #this use pk for show in output (read_only=True) 
+    
     )
 
 
@@ -63,6 +69,7 @@ class PostDetailSerializer(ModelSerializer):
         c_qs = Comment.objects.filter_by_instance(obj)
         comments = CommentSerializers(c_qs, many=True).data
         return comments
+
 
 class PostCreateSerializer(ModelSerializer):
     class Meta:

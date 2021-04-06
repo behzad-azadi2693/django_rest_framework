@@ -32,8 +32,11 @@ class UserUpdate(APIView):
         return Response(srz.error, status=status.HTTP_400_BAD_REQUEST)
 
 
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+
 class UserDelete(APIView):
     def delete(self, request, username):    
+        authentication_classes = [SessionAuthentication, BasicAuthentication]
         permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
         user = User.objects.get(username=username)
         self.check_object_permissions(request, user)
